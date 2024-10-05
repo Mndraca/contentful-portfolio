@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { draftMode } from "next/headers";
 
-import MoreStories from "../../more-stories";
-import Avatar from "../../avatar";
-import Date from "../../date";
-import CoverImage from "../../cover-image";
+import MoreStories from "@/app/components/more-stories";
+import Avatar from "@/app/components/avatar";
+import DateComponent from "@/app/components/date";
+import CoverImage from "@/app/components/cover-image";
 
 import { Markdown } from "@/lib/markdown";
 import { getAllPosts, getPostAndMorePosts } from "@/lib/api";
+import BlogHeader from "@/app/components/blog-header";
 
 export async function generateStaticParams() {
   const allPosts = await getAllPosts(false);
@@ -26,15 +27,10 @@ export default async function PostPage({
   const { post, morePosts } = await getPostAndMorePosts(params.slug, isEnabled);
 
   return (
-    <div className="container mx-auto px-5">
-      <h2 className="mb-20 mt-8 text-2xl font-bold leading-tight tracking-tight md:text-4xl md:tracking-tighter">
-        <Link href="/" className="hover:underline">
-          Blog
-        </Link>
-        .
-      </h2>
+    <div className="container mx-auto px-5 w-3/4 ">
+      <BlogHeader />
       <article>
-        <h1 className="mb-12 text-center text-6xl font-bold leading-tight tracking-tighter md:text-left md:text-7xl md:leading-none lg:text-8xl">
+        <h1 className="mb-12 text-center text-3xl font-bold leading-tight tracking-tighter md:text-center md:text-3xl md:leading-none lg:text-6xl">
           {post.title}
         </h1>
         <div className="hidden md:mb-12 md:block">
@@ -52,12 +48,12 @@ export default async function PostPage({
             )}
           </div>
           <div className="mb-6 text-lg">
-            <Date dateString={post.date} />
+            <DateComponent dateString={post.date} />
           </div>
         </div>
 
-        <div className="mx-auto max-w-2xl">
-          <div className="prose">
+        <div className="max-w-2xl w-3/4 mx-auto">
+          <div className="prose text-lg">
             <Markdown content={post.content} />
           </div>
         </div>
